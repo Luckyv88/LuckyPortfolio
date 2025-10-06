@@ -10,11 +10,11 @@ const experienceRoutes = require('./routes/experienceRoutes');
 
 const app = express();
 // The _dirname variable and path.resolve() are no longer needed 
-// since we removed the static file serving logic.
+// since we will use __dirname and relative path navigation below.
 
 app.use(express.json());
-// Configure CORS to allow access from any origin ('*') for the API, 
-// which is standard when deploying an API separately from the client.
+// Configure CORS to allow access from any origin ('*') for the API.
+// Note: This needs to be broad because the frontend is served by this same server in production.
 app.use(cors({
   origin: process.env.FRONTEND_URL || "*" 
 }));
@@ -35,12 +35,29 @@ app.use('/api/certificates', certRoutes);
 app.use('/api/experience', experienceRoutes);
 
 
-// Default route (API health check)
-// This route now catches any request that didn't match an API route above.
-// It confirms that the backend server is running and accessible.
-app.get('/', (req, res) => {
-  res.send({ status: 'ok', msg: 'Portfolio backend running successfully' });
-});
+// =========================================================================
+// !!! CRITICAL LOGIC FOR FULL-STACK DEPLOYMENT !!!
+// This block serves the built React app when NODE_ENV is 'production'.
+// =========================================================================
+if (process.env.NODE_ENV === 'production') {
+    // 1. Calculate the robust absolute path to the 'frontend/build' folder.
+    // __dirname points to '.../backend'. We navigate up ('..') to the root, then down.
+    const frontendPath = path.join(__dirname, '..', 'frontend', 'build');
+    
+    // 2. Serve static frontend build files (JS, CSS, images)
+    app.use(express.static(frontendPath));
+
+    // 3. Catch-all route: Serve index.html for all other GET requests.
+    // This is required for client-side routing (React Router).
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(frontendPath, 'index.html'));
+    });
+} else {
+    // Default route (API health check) for non-production environments
+    app.get('/', (req, res) => {
+      res.send({ status: 'ok', msg: 'Portfolio backend running successfully' });
+    });
+}
 
 
 const PORT = process.env.PORT || 5000;
