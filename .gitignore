@@ -1,27 +1,29 @@
-Dependencies
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
 /node_modules
-/frontend/node_modules
+/.pnp
+.pnp.js
 
-Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
+# Testing
+/coverage
 
-Environment
+# Production Builds
+# Ignore the built files for the frontend (as they are created in the build step)
+/frontend/build 
+# If you have a build folder in the root, ignore it here (e.g. for backend production files)
+/backend/build 
+
+# Environment Variables
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env.*
 
-Build output
-This folder is created by the 'npm run build --prefix frontend' command
-/frontend/build
-
-Ignore local editor/OS files
+# Misc
 .DS_Store
-*.orig
-npm-shrinkwrap.json
-
-Keep the 'frontend' folder itself, but ignore its build and dependencies
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
