@@ -17,13 +17,18 @@ const ThreeDCard = () => {
     const rotY = dx * 12; // degrees
     const rotX = -dy * 12;
     card.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg) translateZ(0)`;
-    card.style.boxShadow = `${-rotY}px ${Math.abs(rotX*1.5)}px 40px rgba(6,12,20,0.6)`;
+    card.style.boxShadow = `${-rotY}px ${Math.abs(rotX * 1.5)}px 40px rgba(6,12,20,0.6)`;
   };
 
   const reset = () => {
     const card = cardRef.current;
     card.style.transform = `rotateY(0deg) rotateX(0deg)`;
     card.style.boxShadow = `0 10px 30px rgba(0,0,0,0.6)`;
+  };
+
+  const handleResumeClick = () => {
+    // 🔹 Replace this link with your actual Google Drive resume URL
+    window.open('https://drive.google.com/file/d/YOUR_RESUME_ID/view?usp=sharing', '_blank');
   };
 
   return (
@@ -35,16 +40,19 @@ const ThreeDCard = () => {
         onMouseLeave={reset}
       >
         <img src={profileImg} alt="profile" className="profile-img" />
-        <h2 style={{margin:0}}>Lucky Vishwakarma</h2>
+        <h2 style={{ margin: 0 }}>Lucky Vishwakarma</h2>
         <p className="bio">
-         Hands-on knowledge in C/C++, Java, and SQL | Web Development | Interested in Problem-Solving & Technology | B.Tech CSE (2026)
+          Hands-on knowledge in C/C++, Java, and SQL | Web Development | Interested in Problem-Solving & Technology | B.Tech CSE (2026)
         </p>
         <div className="cta">
-          <button className="btn" onClick={() => window.location.href = '/contact'}>Hire me</button>
+          {/* 🔹 Changed only this button (kept the same design & theme) */}
+          <button className="btn" onClick={handleResumeClick}>
+            Resume
+          </button>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default ThreeDCard;

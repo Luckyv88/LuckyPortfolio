@@ -21,23 +21,27 @@ const softSkills = [
   'Adaptability', 'Communication', 'Hardworking', 'Good listener'
 ];
 
-// Updated projects array with description (GitHub removed)
+// Updated projects array with description + GitHub link
 const projects = [
   {
     name: 'Krishi Agro',
-    description: 'A farmer-businessman portal to connect sellers and buyers of agricultural products with multilingual support.'
+    description: 'A farmer-businessman portal to connect sellers and buyers of agricultural products with multilingual support.',
+    github: 'https://github.com/Luckyv88/KrishiAgro'
   },
   {
     name: 'Text Editor',
-    description: 'A lightweight text editor built with JavaScript, supporting syntax highlighting and basic editing features.'
+    description: 'A lightweight text editor built with JavaScript, supporting syntax highlighting and basic editing features.',
+    github: 'https://github.com/Luckyv88/TextChanger'
   },
   {
     name: 'Job Portal',
-    description: 'A job portal web application for freshers and experienced candidates to search and apply for jobs efficiently.'
+    description: 'A job portal web application for freshers and experienced candidates to search and apply for jobs efficiently.',
+    github: 'https://github.com/Luckyv88'
   },
   {
     name: 'Text Summarization',
-    description: 'An AI-powered text summarization tool that generates concise summaries from large documents.'
+    description: 'An AI-powered text summarization tool that generates concise summaries from large documents.',
+    github: 'https://github.com/Luckyv88'
   }
 ];
 
@@ -86,6 +90,33 @@ const Skills = () => {
             >
               <h3 style={{marginBottom:'0.5rem', color:'#ffd700'}}>{p.name}</h3>
               <p style={{flexGrow:1, marginBottom:'1rem', color:'#e0e0e0'}}>{p.description}</p>
+              
+              <a 
+                href={p.github} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                style={{
+                  textDecoration: 'none',
+                  alignSelf: 'flex-start'
+                }}
+              >
+                <button 
+                  style={{
+                    background: '#ffd700',
+                    color: '#000',
+                    padding: '0.5rem 1rem',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'background 0.3s, transform 0.3s'
+                  }}
+                  onMouseEnter={e => e.target.style.background='#e6c200'}
+                  onMouseLeave={e => e.target.style.background='#ffd700'}
+                >
+                  GitHub
+                </button>
+              </a>
             </div>
           ))}
         </div>
