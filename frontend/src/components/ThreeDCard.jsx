@@ -28,7 +28,7 @@ const ThreeDCard = () => {
 
   const handleResumeClick = () => {
     // 🔹 Replace this link with your actual Google Drive resume URL
-    window.open('https://drive.google.com/file/d/YOUR_RESUME_ID/view?usp=sharing', '_blank');
+    window.open('https://drive.google.com/file/d/1IKCSyjPJNg5xhS6-j9gpiy6PT15HzeNk/view?usp=sharing', '_blank');
   };
 
   return (
