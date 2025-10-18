@@ -6,36 +6,16 @@ const Experience = () => {
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
-    axios.get('/api/experience')
-      .then(res => {
-        if (res.data && res.data.length) {
-          const expsWithUrls = res.data.map(exp => ({
-            ...exp,
-            certificateUrl: exp.certificateUrl
-              ? exp.certificateUrl.startsWith('http')
-                ? exp.certificateUrl
-                : `${process.env.PUBLIC_URL}${exp.certificateUrl}`
-              : null
-          }));
-          setExperiences(expsWithUrls);
-        } else setExperiences(fallback());
+    // Use relative path for deployment
+    axios
+      .get('/api/experience')
+      .then((res) => {
+        if (res.data && res.data.length) setExperiences(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error('Error fetching experiences:', err);
-        setExperiences(fallback());
       });
   }, []);
-
-  function fallback() {
-    return Array.from({ length: 10 }).map((_, i) => ({
-      _id: i + 1,
-      organization: `Company ${i + 1}`,
-      position: `Position ${i + 1}`,
-      duration: '6 months',
-      description: 'Sample description for fallback experience.',
-      certificateUrl: `${process.env.PUBLIC_URL}/assets/experience/exp${i + 1}.png`
-    }));
-  }
 
   return (
     <section>
@@ -49,6 +29,7 @@ const Experience = () => {
         }}
       >
         <h2 style={{ color: '#ffd700', marginBottom: '1rem' }}>Experience</h2>
+
         <div
           className="certs-grid"
           style={{
@@ -58,7 +39,7 @@ const Experience = () => {
             gap: '1rem',
           }}
         >
-          {experiences.map(exp => (
+          {experiences.map((exp) => (
             <div
               key={exp._id}
               className="cert-item"
@@ -70,11 +51,11 @@ const Experience = () => {
                 cursor: 'pointer',
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               }}
-              onMouseEnter={e => {
+              onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'scale(1.03)';
                 e.currentTarget.style.boxShadow = '0 0 15px rgba(255,215,0,0.3)';
               }}
-              onMouseLeave={e => {
+              onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'scale(1)';
                 e.currentTarget.style.boxShadow = 'none';
               }}
@@ -115,7 +96,7 @@ const Experience = () => {
         >
           <div
             className="modal-content"
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             style={{
               background: '#222',
               padding: '1.5rem',
@@ -125,7 +106,14 @@ const Experience = () => {
               color: '#fff',
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '1rem',
+              }}
+            >
               <h3>{selected.organization}</h3>
               <button
                 onClick={() => setSelected(null)}
@@ -144,7 +132,9 @@ const Experience = () => {
 
             <p><strong>Position:</strong> {selected.position}</p>
             <p><strong>Duration:</strong> {selected.duration}</p>
-            {selected.description && <p><strong>Description:</strong> {selected.description}</p>}
+            {selected.description && (
+              <p><strong>Description:</strong> {selected.description}</p>
+            )}
 
             {selected.certificateUrl && (
               selected.certificateUrl.endsWith('.pdf') ? (
@@ -154,7 +144,7 @@ const Experience = () => {
                   height="400px"
                   title="experience"
                   style={{ borderRadius: '8px' }}
-                />
+                ></iframe>
               ) : (
                 <img
                   src={selected.certificateUrl}
