@@ -11,8 +11,16 @@ const Certificates = () => {
     useEffect(() => {
         // Use a RELATIVE path for the API call to hit the deployed backend.
         axios.get('/api/certificates').then(res => {
-            if (res.data && res.data.length) setCerts(res.data);
-            else setCerts(fallback());
+            if (res.data && res.data.length) {
+                // Prepend PUBLIC_URL to local files
+                const certsWithUrls = res.data.map(cert => ({
+                    ...cert,
+                    fileUrl: cert.fileUrl.startsWith('http')
+                        ? cert.fileUrl
+                        : `${process.env.PUBLIC_URL}${cert.fileUrl}`
+                }));
+                setCerts(certsWithUrls);
+            } else setCerts(fallback());
         }).catch(() => {
             setCerts(fallback());
         });
@@ -39,7 +47,6 @@ const Certificates = () => {
                         // This uses the defined setSelected function
                         <div key={c._id} className="cert-item" onClick={() => setSelected(c)}>
                             <img src={c.fileUrl} alt={c.title} style={{ width: '100%', borderRadius: 8 }} />
-
                             <div style={{paddingTop:'.5rem'}}>
                                 <strong>{c.title}</strong>
                                 <div style={{color:'#9aa4b2',fontSize:'.85rem'}}>{c.issuedBy}</div>

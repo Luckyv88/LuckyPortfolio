@@ -6,16 +6,37 @@ const Experience = () => {
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
-    // Use relative path for deployment
     axios
       .get('/api/experience')
       .then((res) => {
-        if (res.data && res.data.length) setExperiences(res.data);
+        if (res.data && res.data.length) {
+          const expsWithUrls = res.data.map(exp => ({
+            ...exp,
+            certificateUrl: exp.certificateUrl
+              ? exp.certificateUrl.startsWith('http')
+                ? exp.certificateUrl
+                : `${process.env.PUBLIC_URL}${exp.certificateUrl}`
+              : null
+          }));
+          setExperiences(expsWithUrls);
+        } else setExperiences(fallback());
       })
       .catch((err) => {
         console.error('Error fetching experiences:', err);
+        setExperiences(fallback());
       });
   }, []);
+
+  function fallback() {
+    return Array.from({ length: 10 }).map((_, i) => ({
+      _id: i + 1,
+      organization: `Company ${i + 1}`,
+      position: `Position ${i + 1}`,
+      duration: '6 months',
+      description: 'Sample description for fallback experience.',
+      certificateUrl: `${process.env.PUBLIC_URL}/assets/experience/exp${i + 1}.pdf`
+    }));
+  }
 
   return (
     <section>
